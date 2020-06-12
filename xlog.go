@@ -15,10 +15,10 @@ type Xlog struct {
 	Second    int   // 0: 立即输出到文件 60*60: 按小时输出到文件 60*60*24 按天输出到文件
 }
 
-type XlogInfo struct {
-	CreateTime time.Time `json:"time"`
-	LogLevel   string    `json:"level"`
-	Tag        string    `json:"tag"`
+type XlogFile struct {
+	CreateTime string `json:"time"`
+	LogLevel   string `json:"level"`
+	Tag        string `json:"tag"`
 
 	Name   string `json:"file"`
 	Line   uint32 `json:"line"`
@@ -60,6 +60,8 @@ func (x *Xlog) Trace(tag string, a ...interface{}) {
 	}
 
 	f, l, m := parseAttribute()
+
+	// 需要修改，不具备协程安全性
 	fmt.Printf("%s %s %s [%s:%d] (%s): ", time.Now().Format(layout), "trace", tag, f, l, m)
 	fmt.Println(a...)
 }
