@@ -4,7 +4,7 @@ golang日志输出
 终端输出：
 `2020/06/11 07:15:16 info <tag> [main.go:18] (main.main): <log info>`
 
-示例:
+文件输出:
 `{"time":"yyyy/MM/dd HH:mm:ss", "level":"info", "tag":"###", "methon":"package.methon", "text":"xxxx"}`
 
 ## 使用
