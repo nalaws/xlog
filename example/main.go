@@ -13,15 +13,17 @@ func main() {
 		fmt.Println("end.")
 	}()
 
-	// test1()
-	// test2()
-	xlog.IsFileExist("d:/1.log")
+	//test1()
+	//test2()
+	test3()
+	//test4()
 }
 
 func test1() {
 	log := xlog.NewXlog()
-	log.SetLogLevel(xlog.Info)
-	log.Trace("a", "dd")
+	log.SetLogLevel(xlog.Trace)
+	log.Trace("a", "bb")
+	log.Trace("a", "cc", "dd")
 	log.Info("b", "info")
 }
 
@@ -39,6 +41,43 @@ func test2() {
 
 	go func() {
 		log.SetLogLevel(xlog.Error)
+		for i := 0; i < 1000; i++ {
+			log.Error("#error#", i)
+			wg.Done()
+		}
+	}()
+
+	wg.Wait()
+}
+
+func test3() {
+	log := xlog.NewXlog()
+	log.SetLogLevel(xlog.Trace)
+	err := log.SetTeeFile(true)
+	if err != nil {
+		fmt.Println(err)
+	}
+	_, e := xlog.IsFileExist("d:/2.log")
+	log.Trace("tag", e)
+	log.Trace("error", e)
+}
+
+func test4() {
+	log := xlog.NewXlog()
+	err := log.SetTeeFile(true)
+	if err != nil {
+		fmt.Println(err)
+	}
+	wg := sync.WaitGroup{}
+	wg.Add(2000)
+	go func() {
+		for i := 0; i < 1000; i++ {
+			log.Info("#info#", i)
+			wg.Done()
+		}
+	}()
+
+	go func() {
 		for i := 0; i < 1000; i++ {
 			log.Error("#error#", i)
 			wg.Done()

@@ -18,21 +18,23 @@ func IsFileExist(path string) (bool, error) {
 }
 
 // 打开文件
-func OpenLogFile(pathName string) error {
-	var err error
-	if !IsFileExist(pathName) {
+func openLogFile(pathName string) error {
+	exist, err := IsFileExist(pathName)
+	if !exist || err != nil {
 		if err = os.MkdirAll(path.Dir(pathName), 0755); err != nil {
 			return err
 		}
 		if f, err = os.Create(pathName); err != nil {
 			return err
 		}
+		return nil
 	}
 
-	return nil
+	f, err = os.OpenFile(pathName, os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0644)
+	return err
 }
 
 // 关闭文件
-func CloseLogFile() error {
+func closeLogFile() error {
 	return f.Close()
 }
