@@ -14,7 +14,8 @@ func main() {
 	}()
 
 	// test1()
-	test2()
+	// test2()
+	xlog.IsFileExist("d:/1.log")
 }
 
 func test1() {
