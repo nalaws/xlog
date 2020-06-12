@@ -1,5 +1,5 @@
-example/*.exe
-example/example
+*.exe
+/example/example
 
 
 
