@@ -8,6 +8,7 @@
 {"time":yyyy/MM/dd HH:mm:ss, "level":"info", "tag":"###", "methon":"package.methon", "text":"xxxx"}
 
 ## 使用
+```golang
 import (
 	"github.com/nalaws/xlog"
 )
@@ -17,3 +18,4 @@ func test() {
     log.SetLogLevel(xlog.Info) // 默认trace级别
     log.Info("tag", "info")
 }
+```
