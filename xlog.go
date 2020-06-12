@@ -2,6 +2,7 @@ package xlog
 
 import (
 	"fmt"
+	"sync"
 	"time"
 )
 
@@ -13,6 +14,8 @@ type Xlog struct {
 	logLevel  Level // 定义日志级别
 	teeFile   bool  // 是否输出到文件
 	Second    int   // 0: 立即输出到文件 60*60: 按小时输出到文件 60*60*24 按天输出到文件
+
+	lock sync.Mutex // 日志打印互斥锁
 }
 
 type XlogFile struct {
@@ -32,6 +35,7 @@ func NewXlog() *Xlog {
 		logSwitch: true,
 		logLevel:  Trace,
 		teeFile:   false,
+		lock:      sync.Mutex{},
 	}
 }
 
@@ -61,9 +65,10 @@ func (x *Xlog) Trace(tag string, a ...interface{}) {
 
 	f, l, m := parseAttribute()
 
-	// 需要修改，不具备协程安全性
+	x.lock.Lock()
 	fmt.Printf("%s %s %s [%s:%d] (%s): ", time.Now().Format(layout), "trace", tag, f, l, m)
 	fmt.Println(a...)
+	x.lock.Unlock()
 }
 
 // 打印info日志
@@ -76,8 +81,11 @@ func (x *Xlog) Info(tag string, a ...interface{}) {
 	}
 
 	f, l, m := parseAttribute()
+
+	x.lock.Lock()
 	fmt.Printf("%s %s %s [%s:%d] (%s): ", time.Now().Format(layout), "info", tag, f, l, m)
 	fmt.Println(a...)
+	x.lock.Unlock()
 }
 
 // 打印debug日志
@@ -90,8 +98,11 @@ func (x *Xlog) Debug(tag string, a ...interface{}) {
 	}
 
 	f, l, m := parseAttribute()
+
+	x.lock.Lock()
 	fmt.Printf("%s %s %s [%s:%d] (%s): ", time.Now().Format(layout), "debug", tag, f, l, m)
 	fmt.Println(a...)
+	x.lock.Unlock()
 }
 
 // 打印warn日志
@@ -104,8 +115,11 @@ func (x *Xlog) Warn(tag string, a ...interface{}) {
 	}
 
 	f, l, m := parseAttribute()
+
+	x.lock.Lock()
 	fmt.Printf("%s %s %s [%s:%d] (%s): ", time.Now().Format(layout), "warn", tag, f, l, m)
 	fmt.Println(a...)
+	x.lock.Unlock()
 }
 
 // 打印error日志
@@ -118,8 +132,11 @@ func (x *Xlog) Error(tag string, a ...interface{}) {
 	}
 
 	f, l, m := parseAttribute()
+
+	x.lock.Lock()
 	fmt.Printf("%s %s %s [%s:%d] (%s): ", time.Now().Format(layout), "error", tag, f, l, m)
 	fmt.Println(a...)
+	x.lock.Unlock()
 }
 
 // 打印fatal日志
@@ -129,6 +146,9 @@ func (x *Xlog) Fatal(tag string, a ...interface{}) {
 	}
 
 	f, l, m := parseAttribute()
+
+	x.lock.Lock()
 	fmt.Printf("%s %s %s [%s:%d] (%s): ", time.Now().Format(layout), "fatal", tag, f, l, m)
 	fmt.Println(a...)
+	x.lock.Unlock()
 }
