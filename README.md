@@ -7,5 +7,13 @@
 示例:
 {"time":yyyy/MM/dd HH:mm:ss, "level":"info", "tag":"###", "methon":"package.methon", "text":"xxxx"}
 
+## 使用
+import (
+	"github.com/nalaws/xlog"
+)
 
-
+func test() {
+    log := xlog.NewXlog()
+    log.SetLogLevel(xlog.Info) // 默认trace级别
+    log.Info("tag", "info")
+}
