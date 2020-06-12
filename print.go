@@ -2,6 +2,8 @@ package xlog
 
 import (
 	"fmt"
+	"os"
+	"strconv"
 	"time"
 )
 
@@ -31,11 +33,13 @@ func (x *Xlog) Trace(tag string, a ...interface{}) {
 		return
 	}
 
-	// 这儿需要优化，目前go-log, log, klog, micro/log, zap.logger都是对fmt进行了封装, 会额外增加一些锁
-	x.lock.Lock()
-	fmt.Printf("%s %s %s [%s:%d] (%s): ", time.Now().Format(layout), "trace", tag, f, l, m)
-	fmt.Println(a...)
-	x.lock.Unlock()
+	/*
+		x.lock.Lock()
+		fmt.Printf("%s %s %s [%s:%d] (%s): ", time.Now().Format(layout), "trace", tag, f, l, m)
+		fmt.Println(a...)
+		x.lock.Unlock()
+	*/
+	x.output("trace", tag, f, strconv.Itoa(l), m, fmt.Sprintln(a...))
 }
 
 // 打印info日志
@@ -64,10 +68,7 @@ func (x *Xlog) Info(tag string, a ...interface{}) {
 		return
 	}
 
-	x.lock.Lock()
-	fmt.Printf("%s %s %s [%s:%d] (%s): ", time.Now().Format(layout), "info", tag, f, l, m)
-	fmt.Println(a...)
-	x.lock.Unlock()
+	x.output("info", tag, f, strconv.Itoa(l), m, fmt.Sprintln(a...))
 }
 
 // 打印debug日志
@@ -96,10 +97,7 @@ func (x *Xlog) Debug(tag string, a ...interface{}) {
 		return
 	}
 
-	x.lock.Lock()
-	fmt.Printf("%s %s %s [%s:%d] (%s): ", time.Now().Format(layout), "debug", tag, f, l, m)
-	fmt.Println(a...)
-	x.lock.Unlock()
+	x.output("debug", tag, f, strconv.Itoa(l), m, fmt.Sprintln(a...))
 }
 
 // 打印warn日志
@@ -128,10 +126,7 @@ func (x *Xlog) Warn(tag string, a ...interface{}) {
 		return
 	}
 
-	x.lock.Lock()
-	fmt.Printf("%s %s %s [%s:%d] (%s): ", time.Now().Format(layout), "warn", tag, f, l, m)
-	fmt.Println(a...)
-	x.lock.Unlock()
+	x.output("warn", tag, f, strconv.Itoa(l), m, fmt.Sprintln(a...))
 }
 
 // 打印error日志
@@ -160,10 +155,7 @@ func (x *Xlog) Error(tag string, a ...interface{}) {
 		return
 	}
 
-	x.lock.Lock()
-	fmt.Printf("%s %s %s [%s:%d] (%s): ", time.Now().Format(layout), "error", tag, f, l, m)
-	fmt.Println(a...)
-	x.lock.Unlock()
+	x.output("error", tag, f, strconv.Itoa(l), m, fmt.Sprintln(a...))
 }
 
 // 打印fatal日志
@@ -189,8 +181,23 @@ func (x *Xlog) Fatal(tag string, a ...interface{}) {
 		return
 	}
 
-	x.lock.Lock()
-	fmt.Printf("%s %s %s [%s:%d] (%s): ", time.Now().Format(layout), "fatal", tag, f, l, m)
-	fmt.Println(a...)
-	x.lock.Unlock()
+	x.output("fatal", tag, f, strconv.Itoa(l), m, fmt.Sprintln(a...))
+}
+
+func (x *Xlog) output(level, tag, fname, fline, method, text string) {
+	buf := []byte{}
+	buf = append(buf, []byte(time.Now().Format(layout))...)
+	buf = append(buf, ' ')
+	buf = append(buf, []byte("info")...)
+	buf = append(buf, ' ')
+	buf = append(buf, []byte(tag)...)
+	buf = append(buf, []byte{' ', '['}...)
+	buf = append(buf, []byte(fname)...)
+	buf = append(buf, ' ')
+	buf = append(buf, []byte(fline)...)
+	buf = append(buf, []byte{']', ' ', '('}...)
+	buf = append(buf, []byte(method)...)
+	buf = append(buf, []byte{')', ':', ' '}...)
+	buf = append(buf, []byte(text)...)
+	os.Stdout.Write(buf)
 }
