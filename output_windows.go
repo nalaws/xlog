@@ -14,25 +14,25 @@ var (
 	CloseHandle *syscall.LazyProc = kernel32.NewProc(`CloseHandle`)
 )
 
-type Color int
+type XCmdColor int
 
 const (
-	black       Color = iota // 黑色
-	blue                     // 蓝色
-	green                    // 绿色
-	cyan                     // 青色
-	red                      // 红色
-	purple                   // 紫色
-	yellow                   // 黄色
-	lightGray                // 淡灰色（系统默认值）
-	gray                     // 灰色
-	lightBlue                // 亮蓝色
-	lightGreen               // 亮绿色
-	lightCyan                // 亮青色
-	lightRed                 // 亮红色
-	lightPurple              // 亮紫色
-	lightYellow              // 亮黄色
-	white                    // 白色
+	black       XCmdColor = iota // 黑色
+	blue                         // 蓝色
+	green                        // 绿色
+	cyan                         // 青色
+	red                          // 红色
+	purple                       // 紫色
+	yellow                       // 黄色
+	lightGray                    // 淡灰色（系统默认值）
+	gray                         // 灰色
+	lightBlue                    // 亮蓝色
+	lightGreen                   // 亮绿色
+	lightCyan                    // 亮青色
+	lightRed                     // 亮红色
+	lightPurple                  // 亮紫色
+	lightYellow                  // 亮黄色
+	white                        // 白色
 )
 
 func (x *Xlog) output(level, tag, fname, fline, method, text string) {
@@ -61,7 +61,7 @@ func (x *Xlog) output(level, tag, fname, fline, method, text string) {
 	os.Stdout.Write(buf)
 }
 
-func (x *Xlog) levelColors(level string) Color {
+func (x *Xlog) levelColors(level string) XCmdColor {
 	switch level {
 	case "trace":
 		return gray
