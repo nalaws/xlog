@@ -36,7 +36,7 @@ var (
 
 func init() {
 	colorsPrefix = []byte(fmt.Sprintf("%c[0;", 0x1B))
-	colorsSuffix = []byte(fmt.Sprintf("%c[0m\n", 0x1B))
+	colorsSuffix = []byte(fmt.Sprintf("%c[0m", 0x1B))
 }
 
 func (x *Xlog) output(level, tag, fname, fline, method, text string) {
