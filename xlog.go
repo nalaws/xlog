@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"os"
 	"strings"
-	"sync"
 )
 
 type Xlog struct {
@@ -12,9 +11,6 @@ type Xlog struct {
 	logLevel  Level  // 定义日志级别
 	teeFile   bool   // 是否输出到文件
 	path      string // 如果输出到文件,可以指定文件名。默认为 <application>.log
-	Second    int    // 0: 立即输出到文件 60*60: 按小时输出到文件 60*60*24 按天输出到文件
-
-	lock sync.Mutex // 日志打印互斥锁
 }
 
 func NewXlog() *Xlog {
@@ -22,7 +18,6 @@ func NewXlog() *Xlog {
 		logSwitch: true,
 		logLevel:  Trace,
 		teeFile:   false,
-		lock:      sync.Mutex{},
 	}
 }
 
