@@ -13,8 +13,8 @@ func main() {
 		fmt.Println("end.")
 	}()
 
-	//test1()
-	test2()
+	test1()
+	//test2()
 	//test3()
 	//test4()
 }
@@ -22,9 +22,13 @@ func main() {
 func test1() {
 	log := xlog.NewXlog()
 	log.SetLogLevel(xlog.Trace)
-	log.Trace("a", "bb")
-	log.Trace("a", "cc", "dd")
-	log.Info("b", "info")
+	log.Trace("t", "bb")
+	log.Trace("t", "cc", "dd")
+	log.Info("i", "info")
+	log.Debug("d", "debug")
+	log.Warn("w", "warn")
+	log.Error("e", "error")
+	log.Fatal("f", "fatal")
 }
 
 func test2() {
