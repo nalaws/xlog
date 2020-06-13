@@ -22,6 +22,5 @@ func (x *Xlog) output(level, tag, fname, fline, method, text string) {
 	buf = append(buf, []byte(method)...)
 	buf = append(buf, []byte{')', ':', ' '}...)
 	buf = append(buf, []byte(text)...)
-	buf = append(buf, '\n')
 	os.Stdout.Write(buf)
 }
