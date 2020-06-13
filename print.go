@@ -2,7 +2,6 @@ package xlog
 
 import (
 	"fmt"
-	"os"
 	"strconv"
 	"time"
 )
@@ -39,7 +38,7 @@ func (x *Xlog) Trace(tag string, a ...interface{}) {
 		fmt.Println(a...)
 		x.lock.Unlock()
 	*/
-	x.output("trace", tag, f, strconv.Itoa(l), m, fmt.Sprintln(a...))
+	x.output("trace", tag, f, strconv.Itoa(l), m, fmt.Sprint(a...))
 }
 
 // 打印info日志
@@ -68,7 +67,7 @@ func (x *Xlog) Info(tag string, a ...interface{}) {
 		return
 	}
 
-	x.output("info", tag, f, strconv.Itoa(l), m, fmt.Sprintln(a...))
+	x.output("info", tag, f, strconv.Itoa(l), m, fmt.Sprint(a...))
 }
 
 // 打印debug日志
@@ -97,7 +96,7 @@ func (x *Xlog) Debug(tag string, a ...interface{}) {
 		return
 	}
 
-	x.output("debug", tag, f, strconv.Itoa(l), m, fmt.Sprintln(a...))
+	x.output("debug", tag, f, strconv.Itoa(l), m, fmt.Sprint(a...))
 }
 
 // 打印warn日志
@@ -126,7 +125,7 @@ func (x *Xlog) Warn(tag string, a ...interface{}) {
 		return
 	}
 
-	x.output("warn", tag, f, strconv.Itoa(l), m, fmt.Sprintln(a...))
+	x.output("warn", tag, f, strconv.Itoa(l), m, fmt.Sprint(a...))
 }
 
 // 打印error日志
@@ -155,7 +154,7 @@ func (x *Xlog) Error(tag string, a ...interface{}) {
 		return
 	}
 
-	x.output("error", tag, f, strconv.Itoa(l), m, fmt.Sprintln(a...))
+	x.output("error", tag, f, strconv.Itoa(l), m, fmt.Sprint(a...))
 }
 
 // 打印fatal日志
@@ -181,23 +180,5 @@ func (x *Xlog) Fatal(tag string, a ...interface{}) {
 		return
 	}
 
-	x.output("fatal", tag, f, strconv.Itoa(l), m, fmt.Sprintln(a...))
-}
-
-func (x *Xlog) output(level, tag, fname, fline, method, text string) {
-	buf := []byte{}
-	buf = append(buf, []byte(time.Now().Format(layout))...)
-	buf = append(buf, ' ')
-	buf = append(buf, []byte("info")...)
-	buf = append(buf, ' ')
-	buf = append(buf, []byte(tag)...)
-	buf = append(buf, []byte{' ', '['}...)
-	buf = append(buf, []byte(fname)...)
-	buf = append(buf, ' ')
-	buf = append(buf, []byte(fline)...)
-	buf = append(buf, []byte{']', ' ', '('}...)
-	buf = append(buf, []byte(method)...)
-	buf = append(buf, []byte{')', ':', ' '}...)
-	buf = append(buf, []byte(text)...)
-	os.Stdout.Write(buf)
+	x.output("fatal", tag, f, strconv.Itoa(l), m, fmt.Sprint(a...))
 }
