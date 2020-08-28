@@ -12,7 +12,8 @@ type Xlog struct {
 	logLevel  Level      // 定义日志级别
 	teeFile   bool       // 是否输出到文件
 	lock      sync.Mutex // 日志打印互斥锁
-	fileConf  LogFile    //日志文件配置
+	fileConf  LogFile    // 日志文件配置
+	buffer    map[string][]string
 	appDir    string
 	appName   string
 }
@@ -20,6 +21,7 @@ type Xlog struct {
 func NewXlog() *Xlog {
 	namePos := strings.LastIndex(os.Args[0], ".")
 	dirPos := strings.LastIndex(os.Args[0], "\\") + 1
+
 	return &Xlog{
 		logSwitch: true,
 		logLevel:  Trace,
@@ -61,6 +63,9 @@ func (x *Xlog) SetTeeFile(b bool) error {
 	if x.teeFile {
 		if x.fileConf.Dir == "" {
 			x.fileConf.Dir = x.appDir
+		}
+		if !strings.HasSuffix(x.fileConf.Dir, "\\") {
+			x.fileConf.Dir += "\\"
 		}
 
 		if f == nil {

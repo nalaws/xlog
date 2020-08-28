@@ -7,7 +7,7 @@ import (
 )
 
 // 示例:
-// {"time": yyyyMMdd HH:mm:ss	, "level": "trace", "tag":"xxx", "methon":"package.methon", "id":"xxx", "dd":"xxxx"}
+// {"time": yyyyMMdd HH:mm:ss, "level": "trace", "tag":"xxx", "file":"main.go","line":65,"methon":"package.methon", "text":"xxxx"}
 
 // 日志文件结构
 type XlogFile struct {
@@ -22,20 +22,24 @@ type XlogFile struct {
 	Text interface{} `json:"text"`
 }
 
+func (x *XlogFile) Bytes() ([]byte, error) {
+	bs, err := json.Marshal(*x)
+	if err != nil {
+		x.Text = fmt.Sprintf("xlog json.Marshal(XlogFile) error: %s", err.Error())
+		es, _ := json.Marshal(*x)
+		es = append(es, '\n')
+		return es, err
+	}
+	return bs, nil
+}
+
 // 追加日志
 func (x *XlogFile) Append() error {
 	if f == nil {
 		return errors.New("日志没有初始化")
 	}
 
-	bs, err := json.Marshal(*x)
-	if err != nil {
-		x.Text = fmt.Sprintf("xlog json.Marshal(XlogFile) error: %s", err.Error())
-		es, _ := json.Marshal(*x)
-		es = append(es, '\n')
-		f.Write(es)
-		return err
-	}
+	bs, _ := x.Bytes()
 	bs = append(bs, '\n')
 	f.Write(bs)
 	return nil
