@@ -13,9 +13,9 @@ func main() {
 		fmt.Println("end.")
 	}()
 
-	test1()
+	//test1()
 	//test2()
-	//test3()
+	test3()
 	//test4()
 }
 
@@ -61,7 +61,7 @@ func test3() {
 	if err != nil {
 		fmt.Println(err)
 	}
-	_, e := xlog.IsFileExist("d:/2.log")
+	_, e := xlog.IsFileExist("e:/golang/src/github.com/nalaws/xlog/example/1.log")
 	log.Trace("tag", e)
 	log.Trace("error", e)
 }

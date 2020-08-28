@@ -17,20 +17,22 @@ func (x *Xlog) Trace(tag string, a ...interface{}) {
 
 	f, l, m := parseAttribute()
 
-	if x.teeFile {
-		xlt := fmt.Sprintln(a...)
-		xlf := XlogFile{
-			CreateTime: time.Now().Format(layout),
-			LogLevel:   "trace",
-			Tag:        tag,
-			Name:       f,
-			Line:       l,
-			Methon:     m,
-			Text:       xlt[:len(xlt)-1],
-		}
-		xlf.Append()
+	if !x.teeFile { // 输出到终端
+		x.output("trace", tag, f, strconv.Itoa(l), m, fmt.Sprintln(a...))
 		return
 	}
+
+	xlt := fmt.Sprintln(a...)
+	xlf := XlogFile{
+		CreateTime: time.Now().Format(layout),
+		LogLevel:   "trace",
+		Tag:        tag,
+		Name:       f,
+		Line:       l,
+		Methon:     m,
+		Text:       xlt[:len(xlt)-1],
+	}
+	xlf.Append()
 
 	/*
 		x.lock.Lock()
@@ -38,7 +40,7 @@ func (x *Xlog) Trace(tag string, a ...interface{}) {
 		fmt.Println(a...)
 		x.lock.Unlock()
 	*/
-	x.output("trace", tag, f, strconv.Itoa(l), m, fmt.Sprintln(a...))
+
 }
 
 // 打印info日志
@@ -51,6 +53,11 @@ func (x *Xlog) Info(tag string, a ...interface{}) {
 	}
 
 	f, l, m := parseAttribute()
+
+	if !x.teeFile { // 输出到终端
+		x.output("info", tag, f, strconv.Itoa(l), m, fmt.Sprintln(a...))
+		return
+	}
 
 	if x.teeFile {
 		xlt := fmt.Sprintln(a...)
@@ -67,7 +74,6 @@ func (x *Xlog) Info(tag string, a ...interface{}) {
 		return
 	}
 
-	x.output("info", tag, f, strconv.Itoa(l), m, fmt.Sprintln(a...))
 }
 
 // 打印debug日志
@@ -80,6 +86,11 @@ func (x *Xlog) Debug(tag string, a ...interface{}) {
 	}
 
 	f, l, m := parseAttribute()
+
+	if !x.teeFile { // 输出到终端
+		x.output("debug", tag, f, strconv.Itoa(l), m, fmt.Sprintln(a...))
+		return
+	}
 
 	if x.teeFile {
 		xlt := fmt.Sprintln(a...)
@@ -95,8 +106,6 @@ func (x *Xlog) Debug(tag string, a ...interface{}) {
 		xlf.Append()
 		return
 	}
-
-	x.output("debug", tag, f, strconv.Itoa(l), m, fmt.Sprintln(a...))
 }
 
 // 打印warn日志
@@ -109,6 +118,11 @@ func (x *Xlog) Warn(tag string, a ...interface{}) {
 	}
 
 	f, l, m := parseAttribute()
+
+	if !x.teeFile { // 输出到终端
+		x.output("warn", tag, f, strconv.Itoa(l), m, fmt.Sprintln(a...))
+		return
+	}
 
 	if x.teeFile {
 		xlt := fmt.Sprintln(a...)
@@ -125,7 +139,6 @@ func (x *Xlog) Warn(tag string, a ...interface{}) {
 		return
 	}
 
-	x.output("warn", tag, f, strconv.Itoa(l), m, fmt.Sprintln(a...))
 }
 
 // 打印error日志
@@ -138,6 +151,11 @@ func (x *Xlog) Error(tag string, a ...interface{}) {
 	}
 
 	f, l, m := parseAttribute()
+
+	if !x.teeFile { // 输出到终端
+		x.output("error", tag, f, strconv.Itoa(l), m, fmt.Sprintln(a...))
+		return
+	}
 
 	if x.teeFile {
 		xlt := fmt.Sprintln(a...)
@@ -154,7 +172,6 @@ func (x *Xlog) Error(tag string, a ...interface{}) {
 		return
 	}
 
-	x.output("error", tag, f, strconv.Itoa(l), m, fmt.Sprintln(a...))
 }
 
 // 打印fatal日志
@@ -164,6 +181,11 @@ func (x *Xlog) Fatal(tag string, a ...interface{}) {
 	}
 
 	f, l, m := parseAttribute()
+
+	if !x.teeFile { // 输出到终端
+		x.output("fatal", tag, f, strconv.Itoa(l), m, fmt.Sprintln(a...))
+		return
+	}
 
 	if x.teeFile {
 		xlt := fmt.Sprintln(a...)
@@ -180,5 +202,4 @@ func (x *Xlog) Fatal(tag string, a ...interface{}) {
 		return
 	}
 
-	x.output("fatal", tag, f, strconv.Itoa(l), m, fmt.Sprintln(a...))
 }

@@ -8,6 +8,8 @@ import (
 )
 
 func (x *Xlog) output(level, tag, fname, fline, method, text string) {
+	x.lock.Lock()
+	defer x.lock.Unlock()
 	buf := []byte{}
 	buf = append(buf, []byte(time.Now().Format(layout))...)
 	buf = append(buf, ' ')

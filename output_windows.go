@@ -36,6 +36,8 @@ const (
 )
 
 func (x *Xlog) output(level, tag, fname, fline, method, text string) {
+	x.lock.Lock()
+	defer x.lock.Unlock()
 	// windows 如果做服务器, 这儿可以优化, 可以参考系统源码 Stdout = NewFile(uintptr(syscall.Stdout), "/dev/stdout")
 	handle, _, _ := proc.Call(uintptr(syscall.Stdout), uintptr(x.levelColors(level)))
 	defer func() {

@@ -40,6 +40,8 @@ func init() {
 }
 
 func (x *Xlog) output(level, tag, fname, fline, method, text string) {
+	x.lock.Lock()
+	defer x.lock.Unlock()
 	buf := []byte{}
 	buf = append(buf, colorsPrefix...)
 	buf = append(buf, x.levelColors(level)...)
