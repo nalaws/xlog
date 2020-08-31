@@ -7,22 +7,26 @@ import (
 	"github.com/nalaws/xlog"
 )
 
+var (
+	tag = "tag"
+)
+
 func main() {
 	fmt.Println("begin.")
 	defer func() {
 		fmt.Println("end.")
 	}()
 
-	//test1()
+	test1()
 	//test2()
 	//test3()
-	test4()
+	//test4()
 }
 
 func test1() {
 	log := xlog.NewXlog()
 	log.SetLogLevel(xlog.Trace)
-	log.Trace("t", "bb")
+	log.Trace(tag, "bb")
 	log.Trace("t", "cc", "dd")
 	log.Info("i", "info")
 	log.Debug("d", "debug")

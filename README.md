@@ -13,10 +13,14 @@ import (
 	"github.com/nalaws/xlog"
 )
 
+var (
+	tag = "tag"
+)
+
 func test() {
     log := xlog.NewXlog()
     defer log.Close()
     log.SetLogLevel(xlog.Info) // 默认trace级别
-    log.Info("tag", "info")
+    log.Info(tag, "info")
 }
 ```
