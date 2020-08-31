@@ -44,6 +44,7 @@ func (xlm *XlogFileManager) XlogFile(path, tag string) *XlogFile {
 	return xlf
 }
 
+// 关闭所有日志
 func (xlm *XlogFileManager) CloseAll() {
 	for _, v := range xlm.xlogs {
 		if !v.IsEmpty() {

@@ -57,7 +57,9 @@ func (x *Xlog) SetLogLevel(l Level) {
 func (x *Xlog) SetTeeFile(b bool) error {
 	x.lock.Lock()
 	defer x.lock.Unlock()
-
+	if x.teeFile {
+		x.Close()
+	}
 	x.teeFile = b
 	if x.teeFile {
 		if x.fileConf.Dir == "" {
@@ -73,5 +75,7 @@ func (x *Xlog) SetTeeFile(b bool) error {
 
 // 关闭日志
 func (x *Xlog) Close() {
-	Instance().CloseAll()
+	if x.teeFile {
+		Instance().CloseAll()
+	}
 }
