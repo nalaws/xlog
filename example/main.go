@@ -15,8 +15,8 @@ func main() {
 
 	//test1()
 	//test2()
-	test3()
-	//test4()
+	//test3()
+	test4()
 }
 
 func test1() {
@@ -56,6 +56,7 @@ func test2() {
 
 func test3() {
 	log := xlog.NewXlog()
+	defer log.Close()
 	log.SetLogLevel(xlog.Trace)
 	err := log.SetTeeFile(true)
 	if err != nil {
@@ -68,6 +69,7 @@ func test3() {
 
 func test4() {
 	log := xlog.NewXlog()
+	defer log.Close()
 	err := log.SetTeeFile(true)
 	if err != nil {
 		fmt.Println(err)
@@ -76,14 +78,16 @@ func test4() {
 	wg.Add(2000)
 	go func() {
 		for i := 0; i < 1000; i++ {
-			log.Info("#info#", i)
+			//log.Info("info", i)
+			log.Info("", i)
 			wg.Done()
 		}
 	}()
 
 	go func() {
 		for i := 0; i < 1000; i++ {
-			log.Error("#error#", i)
+			//log.Error("error", i)
+			log.Error("", i)
 			wg.Done()
 		}
 	}()

@@ -1,7 +1,6 @@
 package xlog
 
 import (
-	"fmt"
 	"os"
 	"strings"
 	"sync"
@@ -67,11 +66,12 @@ func (x *Xlog) SetTeeFile(b bool) error {
 		if !strings.HasSuffix(x.fileConf.Dir, "\\") {
 			x.fileConf.Dir += "\\"
 		}
-
-		if f == nil {
-			return openLogFile(fmt.Sprintf("%s%s.log", x.fileConf.Dir, x.appName))
-		}
 	}
 
 	return nil
+}
+
+// 关闭日志
+func (x *Xlog) Close() {
+	Instance().CloseAll()
 }

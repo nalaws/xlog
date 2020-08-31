@@ -8,6 +8,9 @@ import (
 
 // 打印trace日志
 func (x *Xlog) Trace(tag string, a ...interface{}) {
+	if tag == "" {
+		tag = x.appName
+	}
 	if !x.logSwitch {
 		return
 	}
@@ -23,7 +26,7 @@ func (x *Xlog) Trace(tag string, a ...interface{}) {
 	}
 
 	xlt := fmt.Sprintln(a...)
-	xlf := XlogFile{
+	xldata := XlogData{
 		CreateTime: time.Now().Format(layout),
 		LogLevel:   "trace",
 		Tag:        tag,
@@ -32,19 +35,16 @@ func (x *Xlog) Trace(tag string, a ...interface{}) {
 		Methon:     m,
 		Text:       xlt[:len(xlt)-1],
 	}
-	xlf.Append()
-
-	/*
-		x.lock.Lock()
-		fmt.Printf("%s %s %s [%s:%d] (%s): ", time.Now().Format(layout), "trace", tag, f, l, m)
-		fmt.Println(a...)
-		x.lock.Unlock()
-	*/
-
+	xlf := Instance().XlogFile(fmt.Sprintf("%s%s.log", x.fileConf.Dir, tag), tag)
+	xlbytes, _ := xldata.Bytes()
+	xlf.Log2File(xlbytes)
 }
 
 // 打印info日志
 func (x *Xlog) Info(tag string, a ...interface{}) {
+	if tag == "" {
+		tag = x.appName
+	}
 	if !x.logSwitch {
 		return
 	}
@@ -61,7 +61,7 @@ func (x *Xlog) Info(tag string, a ...interface{}) {
 
 	if x.teeFile {
 		xlt := fmt.Sprintln(a...)
-		xlf := XlogFile{
+		xldata := XlogData{
 			CreateTime: time.Now().Format(layout),
 			LogLevel:   "info",
 			Tag:        tag,
@@ -70,7 +70,9 @@ func (x *Xlog) Info(tag string, a ...interface{}) {
 			Methon:     m,
 			Text:       xlt[:len(xlt)-1],
 		}
-		xlf.Append()
+		xlf := Instance().XlogFile(fmt.Sprintf("%s%s.log", x.fileConf.Dir, tag), tag)
+		xlbytes, _ := xldata.Bytes()
+		xlf.Log2File(xlbytes)
 		return
 	}
 
@@ -78,6 +80,9 @@ func (x *Xlog) Info(tag string, a ...interface{}) {
 
 // 打印debug日志
 func (x *Xlog) Debug(tag string, a ...interface{}) {
+	if tag == "" {
+		tag = x.appName
+	}
 	if !x.logSwitch {
 		return
 	}
@@ -94,7 +99,7 @@ func (x *Xlog) Debug(tag string, a ...interface{}) {
 
 	if x.teeFile {
 		xlt := fmt.Sprintln(a...)
-		xlf := XlogFile{
+		xldata := XlogData{
 			CreateTime: time.Now().Format(layout),
 			LogLevel:   "debug",
 			Tag:        tag,
@@ -103,13 +108,18 @@ func (x *Xlog) Debug(tag string, a ...interface{}) {
 			Methon:     m,
 			Text:       xlt[:len(xlt)-1],
 		}
-		xlf.Append()
+		xlf := Instance().XlogFile(fmt.Sprintf("%s%s.log", x.fileConf.Dir, tag), tag)
+		xlbytes, _ := xldata.Bytes()
+		xlf.Log2File(xlbytes)
 		return
 	}
 }
 
 // 打印warn日志
 func (x *Xlog) Warn(tag string, a ...interface{}) {
+	if tag == "" {
+		tag = x.appName
+	}
 	if !x.logSwitch {
 		return
 	}
@@ -126,7 +136,7 @@ func (x *Xlog) Warn(tag string, a ...interface{}) {
 
 	if x.teeFile {
 		xlt := fmt.Sprintln(a...)
-		xlf := XlogFile{
+		xldata := XlogData{
 			CreateTime: time.Now().Format(layout),
 			LogLevel:   "warn",
 			Tag:        tag,
@@ -135,14 +145,18 @@ func (x *Xlog) Warn(tag string, a ...interface{}) {
 			Methon:     m,
 			Text:       xlt[:len(xlt)-1],
 		}
-		xlf.Append()
+		xlf := Instance().XlogFile(fmt.Sprintf("%s%s.log", x.fileConf.Dir, tag), tag)
+		xlbytes, _ := xldata.Bytes()
+		xlf.Log2File(xlbytes)
 		return
 	}
-
 }
 
 // 打印error日志
 func (x *Xlog) Error(tag string, a ...interface{}) {
+	if tag == "" {
+		tag = x.appName
+	}
 	if !x.logSwitch {
 		return
 	}
@@ -159,7 +173,7 @@ func (x *Xlog) Error(tag string, a ...interface{}) {
 
 	if x.teeFile {
 		xlt := fmt.Sprintln(a...)
-		xlf := XlogFile{
+		xldata := XlogData{
 			CreateTime: time.Now().Format(layout),
 			LogLevel:   "error",
 			Tag:        tag,
@@ -168,14 +182,18 @@ func (x *Xlog) Error(tag string, a ...interface{}) {
 			Methon:     m,
 			Text:       xlt[:len(xlt)-1],
 		}
-		xlf.Append()
+		xlf := Instance().XlogFile(fmt.Sprintf("%s%s.log", x.fileConf.Dir, tag), tag)
+		xlbytes, _ := xldata.Bytes()
+		xlf.Log2File(xlbytes)
 		return
 	}
-
 }
 
 // 打印fatal日志
 func (x *Xlog) Fatal(tag string, a ...interface{}) {
+	if tag == "" {
+		tag = x.appName
+	}
 	if !x.logSwitch {
 		return
 	}
@@ -189,7 +207,7 @@ func (x *Xlog) Fatal(tag string, a ...interface{}) {
 
 	if x.teeFile {
 		xlt := fmt.Sprintln(a...)
-		xlf := XlogFile{
+		xldata := XlogData{
 			CreateTime: time.Now().Format(layout),
 			LogLevel:   "fatal",
 			Tag:        tag,
@@ -198,8 +216,9 @@ func (x *Xlog) Fatal(tag string, a ...interface{}) {
 			Methon:     m,
 			Text:       xlt[:len(xlt)-1],
 		}
-		xlf.Append()
+		xlf := Instance().XlogFile(fmt.Sprintf("%s%s.log", x.fileConf.Dir, tag), tag)
+		xlbytes, _ := xldata.Bytes()
+		xlf.Log2File(xlbytes)
 		return
 	}
-
 }
