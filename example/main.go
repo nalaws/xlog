@@ -19,8 +19,8 @@ func main() {
 
 	//test1()
 	//test2()
-	test3()
-	//test4()
+	//test3()
+	test4()
 }
 
 func test1() {
@@ -87,16 +87,16 @@ func test4() {
 	wg.Add(2000)
 	go func() {
 		for i := 0; i < 1000; i++ {
-			//log.Info("info", i)
-			log.Info("", i)
+			log.Info("info", i)
+			//log.Info("", i)
 			wg.Done()
 		}
 	}()
 
 	go func() {
 		for i := 0; i < 1000; i++ {
-			//log.Error("error", i)
-			log.Error("", i)
+			log.Error("error", i)
+			//log.Error("", i)
 			wg.Done()
 		}
 	}()
