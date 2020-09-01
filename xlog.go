@@ -12,7 +12,6 @@ type Xlog struct {
 	teeFile   bool       // 是否输出到文件
 	lock      sync.Mutex // 日志打印互斥锁
 	fileConf  LogFile    // 日志文件配置
-	buffer    map[string][]string
 	appDir    string
 	appName   string
 }
@@ -68,6 +67,7 @@ func (x *Xlog) SetTeeFile(b bool) error {
 		if !strings.HasSuffix(x.fileConf.Dir, "\\") {
 			x.fileConf.Dir += "\\"
 		}
+		XlogFileTimerStart()
 	}
 
 	return nil
@@ -76,6 +76,7 @@ func (x *Xlog) SetTeeFile(b bool) error {
 // 关闭日志
 func (x *Xlog) Close() {
 	if x.teeFile {
+		XlogFileTimerStop()
 		Instance().CloseAll()
 	}
 }

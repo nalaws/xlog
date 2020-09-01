@@ -52,6 +52,7 @@ func (x *XlogFile) openLogFile(pathName string) error {
 func (x *XlogFile) closeLogFile() error {
 	if x.preFile != nil {
 		x.preFile.closeLogFile()
+		x.preFile = nil
 	}
 	err := x.f.Sync()
 	if err != nil {
