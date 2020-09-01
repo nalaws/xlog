@@ -63,6 +63,11 @@ func test3() {
 	defer log.Close()
 	log.SetLogLevel(xlog.Trace)
 	err := log.SetTeeFile(true)
+	conf := xlog.LogFile{
+		Split:         1,
+		SplitInterval: 1 * 60 * 60,
+	}
+	log.SetXlogFileConfig(&conf)
 	if err != nil {
 		fmt.Println(err)
 	}

@@ -35,7 +35,11 @@ func (x *Xlog) Trace(tag string, a ...interface{}) {
 		Methon:     m,
 		Text:       xlt[:len(xlt)-1],
 	}
-	xlf := Instance().XlogFile(fmt.Sprintf("%s%s.log", x.fileConf.Dir, tag), tag)
+	//xlfpath := Instance().XlogFilePath(&x.fileConf, tag)
+	//xlf := Instance().XlogFile(xlfpath, tag)
+
+	//xlf := Instance().XlogFile(fmt.Sprintf("%s%s.log", x.fileConf.Dir, tag), tag)
+	xlf := Instance().XlogFile(&x.fileConf, tag)
 	xlbytes, _ := xldata.Bytes()
 	xlf.Log2File(xlbytes)
 }
@@ -70,7 +74,8 @@ func (x *Xlog) Info(tag string, a ...interface{}) {
 			Methon:     m,
 			Text:       xlt[:len(xlt)-1],
 		}
-		xlf := Instance().XlogFile(fmt.Sprintf("%s%s.log", x.fileConf.Dir, tag), tag)
+		//xlf := Instance().XlogFile(fmt.Sprintf("%s%s.log", x.fileConf.Dir, tag), tag)
+		xlf := Instance().XlogFile(&x.fileConf, tag)
 		xlbytes, _ := xldata.Bytes()
 		xlf.Log2File(xlbytes)
 		return
@@ -108,7 +113,8 @@ func (x *Xlog) Debug(tag string, a ...interface{}) {
 			Methon:     m,
 			Text:       xlt[:len(xlt)-1],
 		}
-		xlf := Instance().XlogFile(fmt.Sprintf("%s%s.log", x.fileConf.Dir, tag), tag)
+		//xlf := Instance().XlogFile(fmt.Sprintf("%s%s.log", x.fileConf.Dir, tag), tag)
+		xlf := Instance().XlogFile(&x.fileConf, tag)
 		xlbytes, _ := xldata.Bytes()
 		xlf.Log2File(xlbytes)
 		return
@@ -145,7 +151,8 @@ func (x *Xlog) Warn(tag string, a ...interface{}) {
 			Methon:     m,
 			Text:       xlt[:len(xlt)-1],
 		}
-		xlf := Instance().XlogFile(fmt.Sprintf("%s%s.log", x.fileConf.Dir, tag), tag)
+		//xlf := Instance().XlogFile(fmt.Sprintf("%s%s.log", x.fileConf.Dir, tag), tag)
+		xlf := Instance().XlogFile(&x.fileConf, tag)
 		xlbytes, _ := xldata.Bytes()
 		xlf.Log2File(xlbytes)
 		return
@@ -182,7 +189,8 @@ func (x *Xlog) Error(tag string, a ...interface{}) {
 			Methon:     m,
 			Text:       xlt[:len(xlt)-1],
 		}
-		xlf := Instance().XlogFile(fmt.Sprintf("%s%s.log", x.fileConf.Dir, tag), tag)
+		//xlf := Instance().XlogFile(fmt.Sprintf("%s%s.log", x.fileConf.Dir, tag), tag)
+		xlf := Instance().XlogFile(&x.fileConf, tag)
 		xlbytes, _ := xldata.Bytes()
 		xlf.Log2File(xlbytes)
 		return
@@ -216,7 +224,8 @@ func (x *Xlog) Fatal(tag string, a ...interface{}) {
 			Methon:     m,
 			Text:       xlt[:len(xlt)-1],
 		}
-		xlf := Instance().XlogFile(fmt.Sprintf("%s%s.log", x.fileConf.Dir, tag), tag)
+		//xlf := Instance().XlogFile(fmt.Sprintf("%s%s.log", x.fileConf.Dir, tag), tag)
+		xlf := Instance().XlogFile(&x.fileConf, tag)
 		xlbytes, _ := xldata.Bytes()
 		xlf.Log2File(xlbytes)
 		return

@@ -29,6 +29,7 @@ func NewXlog() *Xlog {
 	}
 }
 
+// 设置日志配置
 func (x *Xlog) SetXlogConfig(conf *XlogConfig) {
 	x.lock.Lock()
 	defer x.lock.Unlock()
@@ -36,6 +37,13 @@ func (x *Xlog) SetXlogConfig(conf *XlogConfig) {
 	x.logLevel = conf.LogLevel
 	x.teeFile = conf.OutFile
 	x.fileConf = conf.XlogFile
+}
+
+// 设置日志文件配置
+func (x *Xlog) SetXlogFileConfig(conf *LogFile) {
+	x.lock.Lock()
+	defer x.lock.Unlock()
+	x.fileConf = *conf
 }
 
 // 设置日志开关
@@ -66,6 +74,9 @@ func (x *Xlog) SetTeeFile(b bool) error {
 		}
 		if !strings.HasSuffix(x.fileConf.Dir, "\\") {
 			x.fileConf.Dir += "\\"
+		}
+		if x.fileConf.Prefix == "" && x.fileConf.Suffix == "" && x.fileConf.Split == 0 {
+			x.fileConf.Prefix = x.appName
 		}
 		XlogFileTimerStart()
 	}

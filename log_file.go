@@ -5,13 +5,17 @@ import (
 	"os"
 	"path"
 	"sync"
+	"time"
 )
 
 // 日志文件结构
 type XlogFile struct {
-	f       *os.File
-	mu      sync.Mutex
-	preFile *XlogFile
+	path      string   // 文件路径
+	f         *os.File // 文件据本
+	timestamp int64    // 文件生成UNIX时间戳
+	total     int64    // 文件记录总条数
+	mu        sync.Mutex
+	preFile   *XlogFile
 }
 
 // 检测文件
@@ -44,6 +48,8 @@ func (x *XlogFile) openLogFile(pathName string) error {
 	if err != nil {
 		return err
 	}
+	x.path = pathName
+	x.timestamp = time.Now().Unix()
 
 	return nil
 }
@@ -75,4 +81,5 @@ func (x *XlogFile) Log2File(data []byte) {
 	data = append(data, '\n')
 	bufWriter.Write(data)
 	bufWriter.Flush()
+	x.total++
 }

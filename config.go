@@ -13,8 +13,7 @@ type LogFile struct {
 	Dir           string // 文件路径
 	Prefix        string // 文件前缀
 	Suffix        string // 文件后缀
-	Split         bool   // 文件是否拆分
-	SplitInterval int    // 文件拆分间隔.单位: s
-	Interval      int    // 多久写一次. 0:立即写入
-	Max           int    // 多少条写一次. 0:立即写入
+	Split         int    // 文件是否拆分 0: 不拆分, 1: 按时间拆分, 2: 按条数拆分
+	SplitInterval int64  // 文件拆分间隔.单位: s
+	SplitMax      int64  // 每个文件存多少条. 0: 不限制
 }
