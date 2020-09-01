@@ -6,6 +6,14 @@ import (
 	"time"
 )
 
+const (
+	layout = "2006/01/02 15:04:05"
+
+	dayLayout  = "2006-01-02"
+	hourLayout = "2006-01-02-15"
+	timeLayout = "2006-01-02-15-04-05"
+)
+
 var (
 	xlgCtx, xlgCancelFunc = context.WithCancel(context.TODO())
 	schudelCheckTime      = 5 * time.Second

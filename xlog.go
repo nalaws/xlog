@@ -75,9 +75,6 @@ func (x *Xlog) SetTeeFile(b bool) error {
 		if !strings.HasSuffix(x.fileConf.Dir, "\\") {
 			x.fileConf.Dir += "\\"
 		}
-		//if x.fileConf.Prefix == "" && x.fileConf.Suffix == "" && x.fileConf.Split == 0 {
-		//	x.fileConf.Prefix = x.appName
-		//}
 		XlogFileTimerStart()
 	}
 

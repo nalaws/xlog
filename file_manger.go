@@ -14,10 +14,6 @@ type XlogFileManager struct {
 var (
 	gxlogs     *XlogFileManager
 	gxlogslock sync.Mutex
-
-	dayLayout  = "2006-01-02"
-	hourLayout = "2006-01-02-15"
-	timeLayout = "2006-01-02-15-04-05"
 )
 
 // 获取日志文件管理单例
