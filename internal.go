@@ -1,6 +1,7 @@
 package xlog
 
 import (
+	"fmt"
 	"runtime"
 	"strings"
 )
@@ -15,6 +16,9 @@ func parseAttribute() (string, int, string) {
 		ln = line
 		mth = f.Name()
 		pos = strings.LastIndex(mth, "/")
+
+		fmt.Println("pos:", pos, mth)
+
 		if pos > 0 {
 			mth = mth[pos+1:]
 		}
