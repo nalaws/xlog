@@ -39,7 +39,12 @@ func (xlm *XlogFileManager) XlogFile(xclf *LogFile, tag string) *XlogFile {
 		xlm.mu.Lock()
 		if xlf == nil {
 			xlf = &XlogFile{}
-			xlf.openLogFile(xlm.xlogFilePath(t, xclf, tag))
+			err := xlf.openLogFile(xlm.xlogFilePath(t, xclf, tag))
+			if err != nil {
+				fmt.Println("error:", err)
+				xlm.mu.Unlock()
+				return nil
+			}
 			xlm.xlogs[tag] = xlf
 		}
 		xlm.mu.Unlock()
