@@ -17,10 +17,10 @@ func main() {
 		fmt.Println("end.")
 	}()
 
-	//test1()
+	test1()
 	//test2()
 	//test3()
-	test4()
+	//test4()
 }
 
 func test1() {
