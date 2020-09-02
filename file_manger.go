@@ -40,9 +40,8 @@ func (xlm *XlogFileManager) XlogFile(xclf *LogFile, tag string) *XlogFile {
 		if xlf == nil {
 			xlf = &XlogFile{}
 			err := xlf.openLogFile(xlm.xlogFilePath(t, xclf, tag))
-			fmt.Println("xlf info:", err, xlm.xlogFilePath(t, xclf, tag), *xclf)
 			if err != nil {
-				fmt.Println("error:", err)
+				fmt.Println("error:", err, xlm.xlogFilePath(t, xclf, tag))
 				xlm.mu.Unlock()
 				return nil
 			}
