@@ -1,6 +1,7 @@
 package xlog
 
 import (
+	"fmt"
 	"os"
 	"strings"
 	"sync"
@@ -75,7 +76,8 @@ func (x *Xlog) SetTeeFile(b bool) error {
 		if x.fileConf.Dir == "" {
 			x.fileConf.Dir = x.appDir
 		}
-		if !strings.HasSuffix(x.fileConf.Dir, "\\") {
+		fmt.Println("dir:", x.fileConf.Dir)
+		if x.fileConf.Dir != "" && !strings.HasSuffix(x.fileConf.Dir, "\\") {
 			x.fileConf.Dir += "\\"
 		}
 		XlogFileTimerStart()
