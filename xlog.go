@@ -89,7 +89,7 @@ func (x *Xlog) Close() {
 	}
 }
 
-// 获取APP名称作为tag 测试 
+// 获取APP名称作为tag
 func (x *Xlog) AppName() string {
 	return x.appName
 }
