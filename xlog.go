@@ -44,6 +44,9 @@ func (x *Xlog) SetXlogFileConfig(conf *LogFile) {
 	x.lock.Lock()
 	defer x.lock.Unlock()
 	x.fileConf = *conf
+	if x.fileConf.Dir == "" {
+		x.fileConf.Dir = x.appDir
+	}
 }
 
 // 设置日志开关
