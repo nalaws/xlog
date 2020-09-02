@@ -17,7 +17,7 @@ func parseAttribute() (string, int, string) {
 		mth = f.Name()
 		pos = strings.LastIndex(mth, "/")
 
-		fmt.Println("pos:", pos, mth)
+		fmt.Println("pos: ", pos, mth)
 
 		if pos > 0 {
 			mth = mth[pos+1:]
