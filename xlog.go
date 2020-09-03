@@ -1,6 +1,7 @@
 package xlog
 
 import (
+	"fmt"
 	"os"
 	"strings"
 	"sync"
@@ -19,6 +20,8 @@ type Xlog struct {
 func NewXlog() *Xlog {
 	namePos := strings.LastIndex(os.Args[0], ".")
 	dirPos := strings.LastIndex(os.Args[0], "\\") + 1
+
+	fmt.Println("args[0]:", os.Args[0])
 
 	return &Xlog{
 		logSwitch: true,
