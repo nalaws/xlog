@@ -1,8 +1,8 @@
 package xlog
 
 import (
-	"fmt"
 	"os"
+	"path/filepath"
 	"strings"
 	"sync"
 )
@@ -19,15 +19,20 @@ type Xlog struct {
 
 func NewXlog() *Xlog {
 	namePos := strings.LastIndex(os.Args[0], ".")
-	dirPos := strings.LastIndex(os.Args[0], "\\") + 1
-
-	fmt.Println("args[0]:", os.Args[0])
+	dirPos := strings.LastIndex(os.Args[0], "\\")
+	if dirPos < 0 {
+		dirPos = 0
+	} else {
+		dirPos += 1
+	}
+	dir, _ := os.Executable()
+	exPath := filepath.Dir(dir)
 
 	return &Xlog{
 		logSwitch: true,
 		logLevel:  Trace,
 		teeFile:   false,
-		appDir:    os.Args[0][:dirPos],
+		appDir:    exPath + "\\",
 		appName:   os.Args[0][dirPos:namePos],
 	}
 }
