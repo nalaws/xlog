@@ -19,7 +19,7 @@ type Xlog struct {
 
 func NewXlog() *Xlog {
 	namePos := strings.LastIndex(os.Args[0], ".")
-	dirPos := strings.LastIndex(os.Args[0], "\\")
+	dirPos := strings.LastIndex(os.Args[0], string(os.PathSeparator))
 	if dirPos < 0 {
 		dirPos = 0
 	} else {
@@ -32,7 +32,7 @@ func NewXlog() *Xlog {
 		logSwitch: true,
 		logLevel:  Trace,
 		teeFile:   false,
-		appDir:    exPath + "\\",
+		appDir:    exPath + string(os.PathSeparator),
 		appName:   os.Args[0][dirPos:namePos],
 	}
 }
@@ -83,8 +83,8 @@ func (x *Xlog) SetTeeFile(b bool) error {
 		if x.fileConf.Dir == "" {
 			x.fileConf.Dir = x.appDir
 		}
-		if x.fileConf.Dir != "" && !strings.HasSuffix(x.fileConf.Dir, "\\") {
-			x.fileConf.Dir += "\\"
+		if x.fileConf.Dir != "" && !strings.HasSuffix(x.fileConf.Dir, string(os.PathSeparator)) {
+			x.fileConf.Dir += string(os.PathSeparator)
 		}
 		XlogFileTimerStart()
 	}
