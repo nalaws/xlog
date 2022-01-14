@@ -5,10 +5,11 @@ import (
 	"strings"
 )
 
-func parseAttribute() (string, int, string) {
+// skip: 跳过堆栈数。2: 直接使用, 每多封装一次值加1
+func parseAttribute(skip int) (string, int, string) {
 	var nm, mth string
 	var ln int
-	if pc, file, line, ok := runtime.Caller(2); ok {
+	if pc, file, line, ok := runtime.Caller(skip); ok {
 		f := runtime.FuncForPC(pc)
 		pos := strings.LastIndex(file, "/")
 		nm = file[pos+1:]

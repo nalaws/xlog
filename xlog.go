@@ -8,6 +8,7 @@ import (
 )
 
 type Xlog struct {
+	skip      int        // 日志堆栈层数, 默认为2, 如果进行二次封装,每封装一层值加1
 	logSwitch bool       // 日志总开关  true: 输出日志, false: 不输出日志
 	logLevel  Level      // 定义日志级别
 	teeFile   bool       // 是否输出到文件
@@ -29,12 +30,20 @@ func NewXlog() *Xlog {
 	exPath := filepath.Dir(dir)
 
 	return &Xlog{
+		skip:      2,
 		logSwitch: true,
 		logLevel:  Trace,
 		teeFile:   false,
 		appDir:    exPath + string(os.PathSeparator),
 		appName:   os.Args[0][dirPos:namePos],
 	}
+}
+
+// 设置封装层数, 进行1次二次封装设置为 1
+func (x *Xlog) SetSkip(skip int) {
+	x.lock.Lock()
+	defer x.lock.Unlock()
+	x.skip = x.skip + skip
 }
 
 // 设置日志配置

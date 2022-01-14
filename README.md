@@ -24,3 +24,15 @@ func test() {
     log.Info(tag, "info")
 }
 ```
+
+**注意**：如果对包进行二次封装注意设置堆栈层数
+
+```golang
+func test() {
+    log := xlog.NewXlog()
+    defer log.Close()
+    log.SetLogLevel(xlog.Info) // 默认trace级别
+    log.SetSkip(1) // 如果进行二次封装,根据日志输出注意调整
+    log.Info(tag, "info")
+}
+```

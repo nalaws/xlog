@@ -7,7 +7,7 @@ import (
 )
 
 // 打印trace日志
-func (x *Xlog) Trace(tag string, a ...interface{}) {
+func (x *Xlog) Trace(tag string, v ...interface{}) {
 	if tag == "" {
 		tag = x.appName
 	}
@@ -18,14 +18,14 @@ func (x *Xlog) Trace(tag string, a ...interface{}) {
 		return
 	}
 
-	f, l, m := parseAttribute()
+	f, l, m := parseAttribute(x.skip)
 
 	if !x.teeFile { // 输出到终端
-		x.output("trace", tag, f, strconv.Itoa(l), m, fmt.Sprintln(a...))
+		x.output("trace", tag, f, strconv.Itoa(l), m, fmt.Sprintln(v...))
 		return
 	}
 
-	xlt := fmt.Sprintln(a...)
+	xlt := fmt.Sprintln(v...)
 	xldata := XlogData{
 		CreateTime: time.Now().Format(layout),
 		LogLevel:   "trace",
@@ -41,7 +41,7 @@ func (x *Xlog) Trace(tag string, a ...interface{}) {
 }
 
 // 打印info日志
-func (x *Xlog) Info(tag string, a ...interface{}) {
+func (x *Xlog) Info(tag string, v ...interface{}) {
 	if tag == "" {
 		tag = x.appName
 	}
@@ -52,15 +52,15 @@ func (x *Xlog) Info(tag string, a ...interface{}) {
 		return
 	}
 
-	f, l, m := parseAttribute()
+	f, l, m := parseAttribute(x.skip)
 
 	if !x.teeFile { // 输出到终端
-		x.output("info", tag, f, strconv.Itoa(l), m, fmt.Sprintln(a...))
+		x.output("info", tag, f, strconv.Itoa(l), m, fmt.Sprintln(v...))
 		return
 	}
 
 	if x.teeFile {
-		xlt := fmt.Sprintln(a...)
+		xlt := fmt.Sprintln(v...)
 		xldata := XlogData{
 			CreateTime: time.Now().Format(layout),
 			LogLevel:   "info",
@@ -79,7 +79,7 @@ func (x *Xlog) Info(tag string, a ...interface{}) {
 }
 
 // 打印debug日志
-func (x *Xlog) Debug(tag string, a ...interface{}) {
+func (x *Xlog) Debug(tag string, v ...interface{}) {
 	if tag == "" {
 		tag = x.appName
 	}
@@ -90,15 +90,15 @@ func (x *Xlog) Debug(tag string, a ...interface{}) {
 		return
 	}
 
-	f, l, m := parseAttribute()
+	f, l, m := parseAttribute(x.skip)
 
 	if !x.teeFile { // 输出到终端
-		x.output("debug", tag, f, strconv.Itoa(l), m, fmt.Sprintln(a...))
+		x.output("debug", tag, f, strconv.Itoa(l), m, fmt.Sprintln(v...))
 		return
 	}
 
 	if x.teeFile {
-		xlt := fmt.Sprintln(a...)
+		xlt := fmt.Sprintln(v...)
 		xldata := XlogData{
 			CreateTime: time.Now().Format(layout),
 			LogLevel:   "debug",
@@ -116,7 +116,7 @@ func (x *Xlog) Debug(tag string, a ...interface{}) {
 }
 
 // 打印warn日志
-func (x *Xlog) Warn(tag string, a ...interface{}) {
+func (x *Xlog) Warn(tag string, v ...interface{}) {
 	if tag == "" {
 		tag = x.appName
 	}
@@ -127,15 +127,15 @@ func (x *Xlog) Warn(tag string, a ...interface{}) {
 		return
 	}
 
-	f, l, m := parseAttribute()
+	f, l, m := parseAttribute(x.skip)
 
 	if !x.teeFile { // 输出到终端
-		x.output("warn", tag, f, strconv.Itoa(l), m, fmt.Sprintln(a...))
+		x.output("warn", tag, f, strconv.Itoa(l), m, fmt.Sprintln(v...))
 		return
 	}
 
 	if x.teeFile {
-		xlt := fmt.Sprintln(a...)
+		xlt := fmt.Sprintln(v...)
 		xldata := XlogData{
 			CreateTime: time.Now().Format(layout),
 			LogLevel:   "warn",
@@ -153,7 +153,7 @@ func (x *Xlog) Warn(tag string, a ...interface{}) {
 }
 
 // 打印error日志
-func (x *Xlog) Error(tag string, a ...interface{}) {
+func (x *Xlog) Error(tag string, v ...interface{}) {
 	if tag == "" {
 		tag = x.appName
 	}
@@ -164,15 +164,15 @@ func (x *Xlog) Error(tag string, a ...interface{}) {
 		return
 	}
 
-	f, l, m := parseAttribute()
+	f, l, m := parseAttribute(x.skip)
 
 	if !x.teeFile { // 输出到终端
-		x.output("error", tag, f, strconv.Itoa(l), m, fmt.Sprintln(a...))
+		x.output("error", tag, f, strconv.Itoa(l), m, fmt.Sprintln(v...))
 		return
 	}
 
 	if x.teeFile {
-		xlt := fmt.Sprintln(a...)
+		xlt := fmt.Sprintln(v...)
 		xldata := XlogData{
 			CreateTime: time.Now().Format(layout),
 			LogLevel:   "error",
@@ -190,7 +190,7 @@ func (x *Xlog) Error(tag string, a ...interface{}) {
 }
 
 // 打印fatal日志
-func (x *Xlog) Fatal(tag string, a ...interface{}) {
+func (x *Xlog) Fatal(tag string, v ...interface{}) {
 	if tag == "" {
 		tag = x.appName
 	}
@@ -198,15 +198,15 @@ func (x *Xlog) Fatal(tag string, a ...interface{}) {
 		return
 	}
 
-	f, l, m := parseAttribute()
+	f, l, m := parseAttribute(x.skip)
 
 	if !x.teeFile { // 输出到终端
-		x.output("fatal", tag, f, strconv.Itoa(l), m, fmt.Sprintln(a...))
+		x.output("fatal", tag, f, strconv.Itoa(l), m, fmt.Sprintln(v...))
 		return
 	}
 
 	if x.teeFile {
-		xlt := fmt.Sprintln(a...)
+		xlt := fmt.Sprintln(v...)
 		xldata := XlogData{
 			CreateTime: time.Now().Format(layout),
 			LogLevel:   "fatal",
