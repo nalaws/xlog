@@ -28,7 +28,9 @@ func NewXlog() *Xlog {
 	}
 	dir, _ := os.Executable()
 	exPath := filepath.Dir(dir)
-
+	if namePos < dirPos {
+		namePos = len(os.Args[0])
+	}
 	return &Xlog{
 		skip:      2,
 		logSwitch: true,
